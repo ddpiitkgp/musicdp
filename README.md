@@ -1,7 +1,6 @@
 # musicdp
-<<<<<<< HEAD
 
-A new Flutter project.
+MusicDP - A modern distributed music player designed to organize, stream, and understand your music.
 
 ## Getting Started
 
@@ -15,6 +14,4 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-=======
-MusicDP - A modern distributed music player designed to organize, stream, and understand your music.
->>>>>>> 35f420432d86c0ded5533bae809dca27e3239284
+

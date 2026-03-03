@@ -26,7 +26,7 @@ samples, guidance on mobile development, and a full API reference.
 - adb -s emulator-5554 emu kill : Kills a running device
 
 ### emulator
-- emulator -list-avds   : WIll shoe lis of available devices
+- emulator -list-avds   : Will show lis of available devices
 - emulator -avd Pixel_9a -no-window &  [ background ]
   disown
 - nohup emulator -avd Pixel_9a -no-window > emulator.log & [background]

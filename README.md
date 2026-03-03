@@ -17,6 +17,22 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Using adb and emulator
+
+### adb
+- adb devices : list of Devices
+- adb start-server
+- adb stop-server
+- adb -s emulator-5554 emu kill : Kills a running device
+
+### emulator
+- emulator -list-avds   : WIll shoe lis of available devices
+- emulator -avd Pixel_9a -no-window &  [ background ]
+  disown
+- nohup emulator -avd Pixel_9a -no-window > emulator.log & [background]
+- emulator -avd Pixel_9a -netdelay none -netspeed full
+- nohup emulator -avd Pixel_9a -no-window -no-boot-anim -gpu swiftshader_indirect > emulator.log & [background]
+
 
 ## Local Music Library
 - Scan device folders

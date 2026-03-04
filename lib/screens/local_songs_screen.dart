@@ -47,36 +47,36 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Local Songs"),
         backgroundColor: const Color.fromARGB(255, 10, 61, 36),
         foregroundColor: Colors.greenAccent,
+        title: const Text("Local Songs"),
       ),
       body: songs.isEmpty
           ? const Center(
-              child: Text(
-                "No Songs Found",
-                style: TextStyle(color: Colors.white),
-              ),
-            )
+        child: Text(
+          "No Songs Found",
+          style: TextStyle(color: Colors.white),
+        ),
+      )
           : ListView.builder(
-              itemCount: songs.length,
-              itemBuilder: (context, index) {
+        itemCount: songs.length,
+        itemBuilder: (context, index) {
 
-                final song = songs[index];
+          final song = songs[index];
 
-                return ListTile(
-                  title: Text(
-                    song.title,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    song.artist ?? "Unknown Artist",
-                    style: const TextStyle(color: Colors.white70),
-                  ),
-                  leading: const Icon(Icons.music_note, color: Colors.white),
-                );
-              },
+          return ListTile(
+            title: Text(
+              song.title,
+              style: const TextStyle(color: Colors.white),
             ),
+            subtitle: Text(
+              song.artist ?? "Unknown Artist",
+              style: const TextStyle(color: Colors.white70),
+            ),
+            leading: const Icon(Icons.music_note, color: Colors.white),
+          );
+        },
+      ),
     );
   }
 }

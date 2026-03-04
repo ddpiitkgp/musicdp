@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:musicdp/screens/login_screen.dart';
 import 'package:musicdp/screens/local_songs_screen.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  Future<bool> requestMusicPermission() async {   // UPDATED
+    var status = await Permission.audio.request();
+
+    if (status.isGranted) {
+      debugPrint("Audio permission granted");
+      return true;
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +55,7 @@ class HomeScreen extends StatelessWidget {
             ),
             decoration: InputDecoration(
               hintText: "Search songs...",
+              hintStyle: const TextStyle(color: Colors.white54), // NEW
               filled: true,
               fillColor: Colors.white10,
               border: OutlineInputBorder(
@@ -98,18 +112,26 @@ class HomeScreen extends StatelessWidget {
 
           const SizedBox(height: 10),
 
+          /// LOCAL SONGS
           ListTile(
             leading: const Icon(Icons.folder, color: Colors.white),
             title: const Text("Local Songs",
                 style: TextStyle(color: Colors.white)),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LocalSongsScreen(), 
-                ),
-              );
-            },
+              onTap: () async {
+                var status = await Permission.audio.request();
+                if (status.isGranted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LocalSongsScreen(),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Permission required to read songs")),
+                  );
+                }
+              }
           ),
 
           ListTile(

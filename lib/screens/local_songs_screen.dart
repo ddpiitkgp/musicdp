@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:musicdp/screens/bottom_status_bar.dart';
+import 'package:musicdp/player/audio_player_service.dart';
+import 'package:musicdp/widgets/mini_player.dart';
 
 
 class LocalSongsScreen extends StatefulWidget {
@@ -14,75 +14,82 @@ class LocalSongsScreen extends StatefulWidget {
 class _LocalSongsScreenState extends State<LocalSongsScreen> {
 
   final OnAudioQuery _audioQuery = OnAudioQuery();
+  final audioService = AudioPlayerService(); // Global audio player
+
   List<SongModel> songs = [];
 
   @override
   void initState() {
     super.initState();
-    requestPermission();
-  }
-
-  Future<void> requestPermission() async {
-
-    var status = await Permission.storage.request();
-
-    if (status.isGranted) {
-      loadSongs();
-    }
+    loadSongs();
   }
 
   Future<void> loadSongs() async {
+    bool permission = await _audioQuery.permissionsStatus();
 
-    List<SongModel> allSongs = await _audioQuery.querySongs(
-      ignoreCase: true,
-      orderType: OrderType.ASC_OR_SMALLER,
-      sortType: SongSortType.TITLE,
-    );
+    if (!permission) {
+      permission = await _audioQuery.permissionsRequest();
+    }
 
-    setState(() {
-      songs = allSongs;
-    });
+    if (permission) {
+      List<SongModel> result = await _audioQuery.querySongs(
+        sortType: SongSortType.DATE_ADDED,
+        orderType: OrderType.DESC_OR_GREATER,
+        uriType: UriType.EXTERNAL,
+        ignoreCase: true,
+      );
+
+      setState(() {
+        songs = result;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 10, 61, 36),
         foregroundColor: Colors.greenAccent,
         title: const Text("Local Songs"),
       ),
+
       body: songs.isEmpty
-          ? const Center(
-        child: Text(
-          "No Songs Found",
-          style: TextStyle(color: Colors.white),
-        ),
-      )
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
         itemCount: songs.length,
         itemBuilder: (context, index) {
 
-          final song = songs[index];
+          SongModel song = songs[index];
 
           return ListTile(
+            leading: const Icon(Icons.music_note, color: Colors.white),
             title: Text(
               song.title,
               style: const TextStyle(color: Colors.white),
             ),
             subtitle: Text(
-              song.artist ?? "Unknown Artist",
-              style: const TextStyle(color: Colors.white70),
+              song.artist ?? "Unknown",
+              style: const TextStyle(color: Colors.white54),
             ),
-            leading: const Icon(Icons.music_note, color: Colors.white),
+
+            // 🔹 ADD ONTAP TO PLAY SONG
+            onTap: () async {
+              if (song.data != null) {
+                print("Playing: ${song.title}"); // Debug print
+                await audioService.playSong(song.data); // Play song
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("File path not found")),
+                );
+              }
+            },
           );
         },
       ),
-      /// Mini Player Placeholder
-      bottomNavigationBar: const BottomStatusBar(
-        text: "MusicDP • Ready",
-      ),
+      bottomNavigationBar: const MiniPlayer(),
     );
   }
 }

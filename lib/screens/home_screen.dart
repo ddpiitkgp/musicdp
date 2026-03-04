@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musicdp/screens/login_screen.dart';
 import 'package:musicdp/screens/local_songs_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:musicdp/screens/bottom_status_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -144,15 +145,8 @@ class HomeScreen extends StatelessWidget {
       ),
 
       /// Mini Player Placeholder
-      bottomNavigationBar: Container(
-        height: 70,
-        color: Colors.white10,
-        child: const Center(
-          child: Text(
-            "Mini Player (Coming Soon)",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+      bottomNavigationBar: const BottomStatusBar(
+        text: "MusicDP • Ready",
       ),
     );
   }

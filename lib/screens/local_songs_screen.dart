@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:musicdp/screens/bottom_status_bar.dart';
+
 
 class LocalSongsScreen extends StatefulWidget {
   const LocalSongsScreen({super.key});
@@ -76,6 +78,10 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
             leading: const Icon(Icons.music_note, color: Colors.white),
           );
         },
+      ),
+      /// Mini Player Placeholder
+      bottomNavigationBar: const BottomStatusBar(
+        text: "MusicDP • Ready",
       ),
     );
   }

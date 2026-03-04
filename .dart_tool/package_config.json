@@ -483,8 +483,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.11.0",
+  "generatorVersion": "3.11.1",
   "flutterRoot": "file:///1TBBAKUSB/old-home/opt/applications/flutter",
-  "flutterVersion": "3.41.2",
+  "flutterVersion": "3.41.3",
   "pubCache": "file:///home/ddprasad/.pub-cache"
 }

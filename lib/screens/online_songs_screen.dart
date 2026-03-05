@@ -1,28 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:musicdp/services/online_music_service.dart';
 import 'package:musicdp/player/audio_player_service.dart';
+import 'package:musicdp/widgets/mini_player.dart';
+import 'package:musicdp/database/database_helper.dart';
 
 class OnlineSongsScreen extends StatefulWidget {
   const OnlineSongsScreen({super.key});
-
   @override
   State<OnlineSongsScreen> createState() => _OnlineSongsScreenState();
 }
 
 class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
 
-  final TextEditingController urlController =
-  TextEditingController(text: "http://127.0.0.1/Music");
+  final TextEditingController urlController = TextEditingController();
   final OnlineMusicService service = OnlineMusicService();
   final AudioPlayerService player = AudioPlayerService();
 
   List<String> songs = [];
   bool loading = false;
 
+  List<String> savedUrls = [];
+  String? selectedUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    loadSavedUrls();
+  }
+
+  /// Load songs from URL
   Future<void> loadSongs() async {
+    if (urlController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Enter a URL")),
+      );
+      return;
+    }
     setState(() {
       loading = true;
     });
+
     try {
       List<String> result = await service.fetchSongs(urlController.text);
       setState(() {
@@ -33,13 +50,25 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
         SnackBar(content: Text(e.toString())),
       );
     }
+
     setState(() {
       loading = false;
     });
   }
 
+  /// Load previously used URLs
+  Future<void> loadSavedUrls() async {
+    savedUrls = await DatabaseHelper.instance.getUrls();
+    if (savedUrls.isNotEmpty) {
+      selectedUrl = savedUrls.first;
+      urlController.text = selectedUrl!;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -50,51 +79,99 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
 
       body: Column(
         children: [
+          /// URL INPUT
           Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
               children: [
-                Expanded(
-                  child: TextField(
+                /// Editable dropdown
+                Expanded (
+                child: SizedBox(
+                  width: double.infinity,
+                  child: DropdownMenu<String>(
                     controller: urlController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      hintText: "Enter URL",
-                      hintStyle: TextStyle(color: Colors.white54),
+                    width: double.infinity,
+                    hintText: "Enter or Select Music URL",
+                    enableFilter: true,
+                    requestFocusOnTap: true,
+                    textStyle: const TextStyle(
+                      color: Colors.greenAccent,
                     ),
+                    menuStyle: const MenuStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                        Color.fromARGB(255, 25, 25, 25),
+                      ),
+                    ),
+                    dropdownMenuEntries: savedUrls.map((url) {
+                      return DropdownMenuEntry<String>(
+                        value: url,
+                        label: url,
+                        labelWidget: Text(
+                          url,
+                          style: const TextStyle(
+                            color: Colors.greenAccent,
+                            fontSize: 14,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onSelected: (value) {
+                      urlController.text = value ?? "";
+                    },
                   ),
+                )
                 ),
-
+                const SizedBox(width: 10),
+                /// GO button
                 ElevatedButton(
                   onPressed: loadSongs,
                   child: const Text("Go"),
-                )
-
+                ),
               ],
             ),
           ),
 
+          /// LOADING INDICATOR
           if (loading)
-            const CircularProgressIndicator(),
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: CircularProgressIndicator(),
+            ),
+
+          /// SONG LIST
           Expanded(
             child: ListView.builder(
               itemCount: songs.length,
               itemBuilder: (context, index) {
                 String url = songs[index];
-                String name = url.split("/").last;
+                String fileName = url.split("/").last;
                 return ListTile(
                   leading: const Icon(Icons.cloud, color: Colors.white),
-                  title: Text(name,
-                      style: const TextStyle(color: Colors.white)),
-                  onTap: () {
-                    player.playUrl(url);
+                  title: Text(
+                    fileName,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  onTap: () async {
+                    print("Playing URL: $url");
+                    await player.playUrl(
+                      url,
+                      title: fileName,
+                    );
+                    /// Save BASE URL (not song URL)
+                    await DatabaseHelper.instance.insertUrl(
+                      urlController.text,
+                    );
+                    setState(() {});
                   },
                 );
               },
             ),
-          )
+          ),
+
         ],
       ),
+
+      bottomNavigationBar: const MiniPlayer(),
     );
   }
 }

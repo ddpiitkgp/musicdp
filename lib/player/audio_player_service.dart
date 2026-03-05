@@ -3,6 +3,10 @@ import 'package:flutter/foundation.dart';
 
 class AudioPlayerService {
 
+  //final AudioPlayer _player = AudioPlayer();
+  List<String> _playlist = []; // list of URLs or file paths
+  int _currentIndex = -1;       // current playing index
+
   /// Singleton (important so only one player exists in the whole app)
   static final AudioPlayerService _instance = AudioPlayerService._internal();
   factory AudioPlayerService() {
@@ -16,14 +20,23 @@ class AudioPlayerService {
   String currentSource = "";
 
   /// PLAY LOCAL FILE
-  Future<void> playLocal(String path, {String title = ""}) async {
-
+  Future<void> playLocal(
+      String path, {
+        required String title,
+        List<String>? playlist,
+        int startIndex = 0,
+      }) async {
     try {
-
+      // Set playlist if provided
+      if (playlist != null && playlist.isNotEmpty) {
+        _playlist = playlist;
+        _currentIndex = startIndex;
+      }
       currentTitle = title;
       currentSource = path;
       await player.setFilePath(path);
       player.play();
+
       debugPrint("Playing local file: $path");
     } catch (e) {
       debugPrint("Error playing local file: $e");
@@ -31,9 +44,18 @@ class AudioPlayerService {
   }
 
   /// PLAY ONLINE URL
-  Future<void> playUrl(String url, {String title = ""}) async {
-
+  Future<void> playUrl(
+      String url, {
+        required String title,
+        List<String>? playlist,
+        int startIndex = 0,
+      }) async {
     try {
+      // Set playlist if provided
+      if (playlist != null && playlist.isNotEmpty) {
+        _playlist = playlist;
+        _currentIndex = startIndex;
+      }
       currentTitle = title;
       currentSource = url;
       await player.setUrl(url);
@@ -42,6 +64,26 @@ class AudioPlayerService {
     } catch (e) {
       debugPrint("Error streaming: $e");
     }
+  }
+
+  Future<void> next() async {
+    if (_playlist.isEmpty) return;
+
+    _currentIndex++;
+    if (_currentIndex >= _playlist.length) _currentIndex = 0;
+
+    String url = _playlist[_currentIndex];
+    await playUrl(url, title: url.split('/').last);
+  }
+
+  Future<void> previous() async {
+    if (_playlist.isEmpty) return;
+
+    _currentIndex--;
+    if (_currentIndex < 0) _currentIndex = _playlist.length - 1;
+
+    String url = _playlist[_currentIndex];
+    await playUrl(url, title: url.split('/').last);
   }
 
   /// Pause
@@ -70,4 +112,18 @@ class AudioPlayerService {
   void dispose() {
     player.dispose();
   }
+  /// Playlist Inclusion
+  void setPlaylist(List<String> list, int startIndex) {
+    _playlist = list;
+    _currentIndex = startIndex;
+  }
+
+  void toggle() {
+    if (player.playing) {
+      player.pause();   // pause playback
+    } else {
+      player.play();    // resume or start playback
+    }
+  }
+
 }

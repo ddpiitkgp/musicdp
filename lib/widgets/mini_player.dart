@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musicdp/player/audio_player_service.dart';
+import 'package:musicdp/utils/general_utils.dart';
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key});
@@ -29,7 +30,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
   Widget build(BuildContext context) {
 
     // Current playing song info
-    final currentSong = audioService.currentSongTitle ?? "No song playing";
+    final currentSong = audioService.currentTitle ?? "No song playing";
     final isPlaying = player.playing;
 
     return Container(
@@ -41,11 +42,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
           const Icon(Icons.music_note, color: Colors.greenAccent),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              currentSong,
-              style: const TextStyle(color: Colors.white),
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: getMarquee(currentSong),
           ),
           IconButton(
             icon: Icon(

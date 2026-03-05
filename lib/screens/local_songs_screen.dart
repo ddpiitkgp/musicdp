@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:musicdp/player/audio_player_service.dart';
 import 'package:musicdp/widgets/mini_player.dart';
+import 'package:musicdp/player/audio_player_service.dart';
+import 'package:marquee/marquee.dart';
+
+
 
 
 class LocalSongsScreen extends StatefulWidget {
   const LocalSongsScreen({super.key});
-
   @override
   State<LocalSongsScreen> createState() => _LocalSongsScreenState();
 }
@@ -78,8 +80,12 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
             // 🔹 ADD ONTAP TO PLAY SONG
             onTap: () async {
               if (song.data != null) {
-                print("Playing: ${song.title}"); // Debug print
-                await audioService.playSong(song.data); // Play song
+                print("Playing: ${song.title}"); // Debug
+                await audioService.playLocal(
+                  song.data,
+                  title: song.title,
+                );
+                setState(() {}); // Refresh UI so MiniPlayer updates
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("File path not found")),

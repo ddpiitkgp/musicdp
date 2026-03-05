@@ -12,6 +12,7 @@
         "flutter",
         "http",
         "just_audio",
+        "marquee",
         "on_audio_query",
         "path_provider",
         "permission_handler",
@@ -289,6 +290,21 @@
       "name": "id3",
       "version": "1.0.2",
       "dependencies": []
+    },
+    {
+      "name": "marquee",
+      "version": "2.3.0",
+      "dependencies": [
+        "fading_edge_scrollview",
+        "flutter"
+      ]
+    },
+    {
+      "name": "fading_edge_scrollview",
+      "version": "4.1.1",
+      "dependencies": [
+        "flutter"
+      ]
     },
     {
       "name": "path_provider",

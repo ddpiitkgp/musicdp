@@ -8,7 +8,7 @@ class BottomStatusBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 28,
+      height: 48,
       color: const Color.fromARGB(255, 10, 61, 36),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       alignment: Alignment.centerLeft,

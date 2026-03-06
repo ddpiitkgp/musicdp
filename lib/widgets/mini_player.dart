@@ -27,11 +27,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
           /// Song Title
           Expanded(
             child: getMarquee(title)
-            /*Text(
-              title,
-              style: const TextStyle(color: Colors.white),
-              overflow: TextOverflow.ellipsis,
-            ),*/
           ),
 
           /// Previous Button

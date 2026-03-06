@@ -5,11 +5,20 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:musicdp/screens/bottom_status_bar.dart';
 import 'package:musicdp/screens/online_songs_screen.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  Future<bool> requestMusicPermission() async {   // UPDATED
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  int selectedInstrument = 0;
+  TextEditingController beatController = TextEditingController();
+  List<String> instruments = [ "Kick", "Snare", "HiHat", "Clap", "Tom", "Crash", "Ride", "Bass"];
+
+  Future<bool> requestMusicPermission() async {
     var status = await Permission.audio.request();
 
     if (status.isGranted) {
@@ -18,7 +27,6 @@ class HomeScreen extends StatelessWidget {
     } else if (status.isPermanentlyDenied) {
       openAppSettings();
     }
-
     return false;
   }
 
@@ -31,7 +39,6 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 10, 61, 36),
         foregroundColor: Colors.greenAccent,
         title: const Text("MusicDP: ddprasad@gmail.com"),
-        centerTitle: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -51,14 +58,12 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
 
-          /// Search
+          /// SEARCH
           TextField(
-            style: const TextStyle(
-              color: Colors.lightGreenAccent,
-            ),
+            style: const TextStyle(color: Colors.lightGreenAccent),
             decoration: InputDecoration(
               hintText: "Search songs...",
-              hintStyle: const TextStyle(color: Colors.white54), // NEW
+              hintStyle: const TextStyle(color: Colors.white54),
               filled: true,
               fillColor: Colors.white10,
               border: OutlineInputBorder(
@@ -70,40 +75,7 @@ class HomeScreen extends StatelessWidget {
 
           const SizedBox(height: 25),
 
-          /// Recently Played
-          const Text(
-            "Recently Played",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          const SizedBox(height: 10),
-
-          SizedBox(
-            height: 120,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 100,
-                  margin: const EdgeInsets.only(right: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white12,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(Icons.music_note, color: Colors.white),
-                );
-              },
-            ),
-          ),
-
-          const SizedBox(height: 25),
-
-          /// Library
+          /// LIBRARY
           const Text(
             "Your Library",
             style: TextStyle(
@@ -113,35 +85,32 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 25),
 
           /// LOCAL SONGS
           ListTile(
             leading: const Icon(Icons.folder, color: Colors.white),
             title: const Text("Local Songs",
                 style: TextStyle(color: Colors.white)),
-              onTap: () async {
-                var status = await Permission.audio.request();
-                if (status.isGranted) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LocalSongsScreen(),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Permission required to read songs")),
-                  );
-                }
+            onTap: () async {
+              var status = await Permission.audio.request();
+              if (status.isGranted) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LocalSongsScreen(),
+                  ),
+                );
               }
+            },
           ),
 
+          /// ONLINE SONGS
           ListTile(
             leading: const Icon(Icons.cloud, color: Colors.white),
             title: const Text("Online Collection",
                 style: TextStyle(color: Colors.white)),
-            onTap: () async {
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -150,10 +119,118 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
+
+          const SizedBox(height: 25),
+
+          /// OCTOPAD SECTION
+          const Text(
+            "Beat Pad",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          /// INSTRUMENT DOTS
+          SizedBox(
+            height: 40,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: instruments.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedInstrument = index;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(6),
+                    width: 16,
+                    height: 16,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: selectedInstrument == index
+                          ? Colors.greenAccent
+                          : Colors.grey,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          /// OCTOPAD GRID
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 8,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemBuilder: (context, index) {
+
+              String padName =
+                  "${String.fromCharCode(65 + selectedInstrument)}$index";
+
+              return GestureDetector(
+                onTap: () {
+
+                  setState(() {
+                    beatController.text += "$padName ";
+                  });
+
+                  debugPrint("Pad pressed: $padName");
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade700,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      padName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+
+          const SizedBox(height: 20),
+
+          /// BEAT RECORDER
+          TextField(
+            controller: beatController,
+            style: const TextStyle(color: Colors.white),
+            maxLines: 2,
+            decoration: InputDecoration(
+              labelText: "Recorded Beats",
+              labelStyle: const TextStyle(color: Colors.white),
+              filled: true,
+              fillColor: Colors.white10,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
         ],
       ),
 
-      /// Mini Player Placeholder
       bottomNavigationBar: const BottomStatusBar(
         text: "MusicDP • Ready",
       ),

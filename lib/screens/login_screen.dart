@@ -11,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController emailPhoneController = TextEditingController();
-
+  bool isAgreed = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +72,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20),
 
+              Row(
+                children: [
+                  Checkbox(
+                    value: isAgreed,
+                    activeColor: Colors.greenAccent,
+                    onChanged: (value) {
+                      setState(() {
+                        isAgreed = value!;
+                      });
+                    },
+                  ),
+                  const Expanded(
+                    child: Text(
+                      "I agree to MusicDP Terms & Conditions",
+                      style: TextStyle(
+                        color: Colors.white54,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               /// Button
               SizedBox(
                 width: double.infinity,
@@ -84,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: isAgreed ? ()  {
                     String user = emailPhoneController.text.trim();
                     // ADD VALIDATION HERE
                     if (user.isEmpty) {
@@ -101,25 +124,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     }
-                  },
+                  } : null,
                   child: const Text(
                     "Continue",
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              const Text(
-                "By continuing you agree to MusicDP terms",
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 12,
-                ),
-                textAlign: TextAlign.center,
-              )
-
             ],
           ),
         ),

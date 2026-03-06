@@ -3,6 +3,8 @@ import 'package:musicdp/services/online_music_service.dart';
 import 'package:musicdp/player/audio_player_service.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:musicdp/database/database_helper.dart';
+import 'package:musicdp/models/onlinesong.dart';
+//import 'package:on_audio_query/on_audio_query.dart';
 
 class OnlineSongsScreen extends StatefulWidget {
   const OnlineSongsScreen({super.key});
@@ -14,13 +16,14 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
 
   final TextEditingController urlController = TextEditingController();
   final OnlineMusicService service = OnlineMusicService();
-  final AudioPlayerService player = AudioPlayerService();
+  final audioService = AudioPlayerService(); // Global audio player
 
-  List<String> songs = [];
+  //List<String> songs = [];
   bool loading = false;
 
   List<String> savedUrls = [];
   String? selectedUrl;
+  List<OnlineSongModel> songs = [];
 
   @override
   void initState() {
@@ -41,7 +44,7 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
     });
 
     try {
-      List<String> result = await service.fetchSongs(urlController.text);
+      List<OnlineSongModel> result = await service.fetchSongs(urlController.text);
       setState(() {
         songs = result;
       });
@@ -143,7 +146,8 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
             child: ListView.builder(
               itemCount: songs.length,
               itemBuilder: (context, index) {
-                String url = songs[index];
+                String url = songs[index].url;
+                OnlineSongModel song = songs[index];
                 String fileName = url.split("/").last;
                 return ListTile(
                   leading: const Icon(Icons.cloud, color: Colors.white),
@@ -151,18 +155,27 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
                     fileName,
                     style: const TextStyle(color: Colors.white),
                   ),
-                  onTap: () async {
-                    print("Playing URL: $url");
-                    await player.playUrl(
-                      url,
-                      title: fileName,
-                    );
-                    /// Save BASE URL (not song URL)
-                    await DatabaseHelper.instance.insertUrl(
-                      urlController.text,
-                    );
-                    setState(() {});
-                  },
+                    onTap: () async {
+                      if (song.url != null) {
+                        print("Playing: ${song.title}");
+                        await audioService.playUrl(
+                          song.url,
+                          title: song.title,
+                        );
+                        // 🔹 Save to history
+                        await DatabaseHelper.instance.insertSong(
+                          title: song.title,
+                          url: song.url,
+                          artist: song.artist,
+                        );
+
+                        setState(() {});
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("File path not found")),
+                        );
+                      }
+                    },
                 );
               },
             ),

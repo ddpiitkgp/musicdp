@@ -3,8 +3,8 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:musicdp/player/audio_player_service.dart';
 import 'package:marquee/marquee.dart';
-
-
+import 'package:musicdp/database/database_helper.dart';
+import 'package:musicdp/models/onlinesong.dart';
 
 
 class LocalSongsScreen extends StatefulWidget {
@@ -28,11 +28,9 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
 
   Future<void> loadSongs() async {
     bool permission = await _audioQuery.permissionsStatus();
-
     if (!permission) {
       permission = await _audioQuery.permissionsRequest();
     }
-
     if (permission) {
       List<SongModel> result = await _audioQuery.querySongs(
         sortType: SongSortType.DATE_ADDED,
@@ -51,7 +49,6 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 10, 61, 36),
         foregroundColor: Colors.greenAccent,
@@ -63,9 +60,7 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
           : ListView.builder(
         itemCount: songs.length,
         itemBuilder: (context, index) {
-
           SongModel song = songs[index];
-
           return ListTile(
             leading: const Icon(Icons.music_note, color: Colors.white),
             title: Text(
@@ -78,20 +73,26 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
             ),
 
             // 🔹 ADD ONTAP TO PLAY SONG
-            onTap: () async {
-              if (song.data != null) {
-                print("Playing: ${song.title}"); // Debug
-                await audioService.playLocal(
-                  song.data,
-                  title: song.title,
-                );
-                setState(() {}); // Refresh UI so MiniPlayer updates
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("File path not found")),
-                );
-              }
-            },
+              onTap: () async {
+                if (song.data != null) {
+                  print("Playing: ${song.title}");
+                  await audioService.playLocal(
+                    song.data,
+                    title: song.title,
+                  );
+                  // 🔹 Save to history
+                  await DatabaseHelper.instance.insertSong(
+                    title: song.title,
+                    url: song.data,
+                    artist: song.artist,
+                  );
+                  setState(() {});
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("File path not found")),
+                  );
+                }
+              },
           );
         },
       ),

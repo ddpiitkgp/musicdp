@@ -10,11 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77bd8f06-5a62-426f-ade3-73d11d6b9d2c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/database/database_helper.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/models/onlinesong.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/player/audio_player_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/player/audio_player_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/database_helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/database_helper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/song.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/local_songs_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/local_songs_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/login_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/login_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/online_songs_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/online_songs_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/online_music_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/online_music_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/widgets/mini_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/mini_player.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +51,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/lib/services/online_music_service.dart" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -82,6 +89,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;io.flutter.project.isFirstOpen&quot;: &quot;true&quot;,
     &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;device.mirroring&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>

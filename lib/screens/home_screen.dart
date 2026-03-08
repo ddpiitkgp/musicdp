@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:musicdp/screens/login_screen.dart';
 import 'package:musicdp/screens/local_songs_screen.dart';
+import 'package:musicdp/widgets/mini_player.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:musicdp/screens/bottom_status_bar.dart';
 import 'package:musicdp/screens/online_songs_screen.dart';
+import 'package:musicdp/player/audio_player_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedInstrument = 0;
   TextEditingController beatController = TextEditingController();
   List<String> instruments = [ "Kick", "Snare", "HiHat", "Clap", "Tom", "Crash", "Ride", "Bass"];
+  final audioService = AudioPlayerService(); // Global audio player
 
   Future<bool> requestMusicPermission() async {
     var status = await Permission.audio.request();
@@ -123,6 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 25),
 
           /// OCTOPAD SECTION
+          /*
           const Text(
             "Beat Pad",
             style: TextStyle(
@@ -182,11 +185,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               return GestureDetector(
                 onTap: () {
-
+                  String instrument = String.fromCharCode(65 + selectedInstrument);
+                  audioService.playPad(instrument, index);
                   setState(() {
                     beatController.text += "$padName ";
                   });
-
                   debugPrint("Pad pressed: $padName");
                 },
                 child: Container(
@@ -227,13 +230,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           const SizedBox(height: 10),
-
+          */
         ],
       ),
 
-      bottomNavigationBar: const BottomStatusBar(
-        text: "MusicDP • Ready",
-      ),
+      bottomNavigationBar: const MiniPlayer(),
     );
   }
 }

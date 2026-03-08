@@ -8,14 +8,16 @@ class AudioService extends ChangeNotifier {
   String currentTitle = "";
   bool isPlaying = false;
 
+  /*
+  Future<void> playPad(String instrument, int pad) async {
+      await _playerService.playPad(instrument, pad);
+  }
+  */
   /// Play local file
   Future<void> playLocal(String path, {String title = ""}) async {
-
     await _playerService.playLocal(path, title: title);
-
     currentTitle = title;
     isPlaying = true;
-
     notifyListeners();
   }
 

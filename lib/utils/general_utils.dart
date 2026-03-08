@@ -9,7 +9,7 @@ Widget getMarquee(String text, {TextStyle? style, double height = 24}) {
         text: text,
         style: style ?? const TextStyle(
           fontSize: 14,
-          color: Colors.greenAccent,
+          color: Colors.black87,
         ),
         scrollAxis: Axis.horizontal,
         crossAxisAlignment: CrossAxisAlignment.center,

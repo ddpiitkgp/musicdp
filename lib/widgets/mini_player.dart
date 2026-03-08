@@ -11,19 +11,18 @@ class MiniPlayer extends StatefulWidget {
 }
 
 class _MiniPlayerState extends State<MiniPlayer> {
-  final AudioPlayerService player = AudioPlayerService();
+  AudioPlayerService audPlayerService = AudioPlayerService();
 
   @override
   Widget build(BuildContext context) {
-    String title = player.currentTitle ?? "No Song";
+    String title = audPlayerService.currentTitle ?? "No Song";
 
     return Container(
       height: 60,
-      color: Colors.black,
+      color: Colors.grey.shade600,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
-
           /// Song Title
           Expanded(
             child: getMarquee(title)
@@ -31,27 +30,45 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
           /// Previous Button
           IconButton(
-            icon: const Icon(Icons.skip_previous, color: Colors.greenAccent),
+            icon: const Icon(Icons.skip_previous, color: Colors.black87),
             onPressed: () {
-              player.previous();
+              audPlayerService.previous();
               setState(() {}); // refresh title
             },
           ),
 
           /// Play / Pause Button
-          IconButton(
-            icon: const Icon(Icons.play_arrow, color: Colors.greenAccent),
-            onPressed: () {
-              player.toggle();
-              setState(() {}); // refresh button if needed
+          StreamBuilder<PlayerState>(
+            stream: audPlayerService.playerStateStream,
+            builder: (context, snapshot) {
+              final playing = audPlayerService.player.playing ?? false; //snapshot.data?.playing ?? false;
+              return IconButton(
+                icon: Icon(
+                  playing ? Icons.pause : Icons.play_arrow,
+                  color: Colors.black87,
+                ),
+                onPressed: () {
+                  audPlayerService.toggle();
+                },
+              );
             },
           ),
+          // IconButton(
+          //   icon: Icon(
+          //     audPlayerService.player.playing ? Icons.pause : Icons.play_arrow,
+          //     color: Colors.greenAccent,
+          //   ),
+          //   onPressed: () {
+          //     audPlayerService.toggle();
+          //     setState(() {}); // refresh button if needed
+          //   }
+          // ),
 
           /// Next Button
           IconButton(
-            icon: const Icon(Icons.skip_next, color: Colors.greenAccent),
+            icon: const Icon(Icons.skip_next, color: Colors.black87),
             onPressed: () {
-              player.next();
+              audPlayerService.next();
               setState(() {}); // refresh title
             },
           ),

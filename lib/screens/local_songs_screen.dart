@@ -5,6 +5,7 @@ import 'package:musicdp/player/audio_player_service.dart';
 import 'package:marquee/marquee.dart';
 import 'package:musicdp/database/database_helper.dart';
 import 'package:musicdp/models/onlinesong.dart';
+import 'package:just_audio/just_audio.dart';
 
 
 class LocalSongsScreen extends StatefulWidget {
@@ -61,38 +62,59 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
         itemCount: songs.length,
         itemBuilder: (context, index) {
           SongModel song = songs[index];
-          return ListTile(
-            leading: const Icon(Icons.music_note, color: Colors.white),
-            title: Text(
-              song.title,
-              style: const TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              song.artist ?? "Unknown",
-              style: const TextStyle(color: Colors.white54),
-            ),
+          return StreamBuilder<PlayerState>(
+            stream: audioService.playerStateStream,
+            builder: (context, snapshot) {
+              final playing = snapshot.data?.playing ?? false;
+              final isCurrentSong = audioService.currentTitle == song.title;
+              return ListTile(
+                tileColor: isCurrentSong
+                    ? Colors.grey.shade800
+                    : Colors.transparent,
+                leading: const Icon(Icons.music_note, color: Colors.white),
+                title: Text(
+                  song.title,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  song.artist ?? "Unknown",
+                  style: const TextStyle(color: Colors.white54),
+                ),
+                trailing: IconButton(
+                  icon: Icon(
+                    isCurrentSong && playing ? Icons.pause : Icons.play_arrow,
+                    color: Colors.greenAccent,
+                  ),
+                  onPressed: () async {
+                    if (isCurrentSong && playing) {
+                      await audioService.pause();
+                    } else {
+                      await audioService.playLocal(
+                        song.data,
+                        title: song.title,
+                      );
+                      await DatabaseHelper.instance.insertSong(
+                        title: song.title,
+                        url: song.data,
+                        artist: song.artist,
+                      );
+                    }
 
-            // 🔹 ADD ONTAP TO PLAY SONG
-              onTap: () async {
-                if (song.data != null) {
-                  print("Playing: ${song.title}");
+                  },
+                ),
+                onTap: () async {
                   await audioService.playLocal(
                     song.data,
                     title: song.title,
                   );
-                  // 🔹 Save to history
                   await DatabaseHelper.instance.insertSong(
                     title: song.title,
                     url: song.data,
                     artist: song.artist,
                   );
-                  setState(() {});
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("File path not found")),
-                  );
-                }
-              },
+                },
+              );
+            },
           );
         },
       ),

@@ -1,12 +1,13 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
+// import 'package:musicdp/player/pad_audio_manager.dart';
+
 
 class AudioPlayerService {
 
   //final AudioPlayer _player = AudioPlayer();
   List<String> _playlist = []; // list of URLs or file paths
   int _currentIndex = -1;       // current playing index
-
   /// Singleton (important so only one player exists in the whole app)
   static final AudioPlayerService _instance = AudioPlayerService._internal();
   factory AudioPlayerService() {
@@ -19,6 +20,12 @@ class AudioPlayerService {
   String currentTitle = "";
   String currentSource = "";
 
+  /*
+  Future<void> playPad(String instrument, int pad) async {
+    String padName = "$instrument$pad";
+    octopadAudio.play(padName);
+  }
+  */
   /// PLAY LOCAL FILE
   Future<void> playLocal(
       String path, {
@@ -125,5 +132,6 @@ class AudioPlayerService {
       player.play();    // resume or start playback
     }
   }
+
 
 }

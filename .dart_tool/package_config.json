@@ -117,9 +117,9 @@
     },
     {
       "name": "hooks",
-      "rootUri": "file:///home/ddprasad/.pub-cache/hosted/pub.dev/hooks-1.0.1",
+      "rootUri": "file:///home/ddprasad/.pub-cache/hosted/pub.dev/hooks-1.0.2",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "http",
@@ -213,9 +213,9 @@
     },
     {
       "name": "native_toolchain_c",
-      "rootUri": "file:///home/ddprasad/.pub-cache/hosted/pub.dev/native_toolchain_c-0.17.4",
+      "rootUri": "file:///home/ddprasad/.pub-cache/hosted/pub.dev/native_toolchain_c-0.17.5",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.10"
     },
     {
       "name": "nested",

@@ -4,7 +4,7 @@ import 'package:musicdp/player/audio_player_service.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:musicdp/database/database_helper.dart';
 import 'package:musicdp/models/onlinesong.dart';
-//import 'package:on_audio_query/on_audio_query.dart';
+import 'package:just_audio/just_audio.dart';
 
 class OnlineSongsScreen extends StatefulWidget {
   const OnlineSongsScreen({super.key});
@@ -17,6 +17,12 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
   final TextEditingController urlController = TextEditingController();
   final OnlineMusicService service = OnlineMusicService();
   final audioService = AudioPlayerService(); // Global audio player
+
+  final List<String> defaultUrls = [
+    "http://tumblr.blog.netgautam.com/wp-content/uploads/audio_/Hindi/",
+    "https://www.microvolt.com/001-Healthy-Living/0001-bollywood-INDIAN-MUSIC/",
+    "https://www.ruhanisatsangusa.org/mp3/Hindi/",
+  ];
 
   //List<String> songs = [];
   bool loading = false;
@@ -62,10 +68,13 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
   /// Load previously used URLs
   Future<void> loadSavedUrls() async {
     savedUrls = await DatabaseHelper.instance.getUrls();
-    if (savedUrls.isNotEmpty) {
-      selectedUrl = savedUrls.first;
-      urlController.text = selectedUrl!;
+    if (savedUrls.isEmpty) {
+      savedUrls = defaultUrls;
+    } else {
+      savedUrls = [...defaultUrls, ...savedUrls];
     }
+    selectedUrl = savedUrls.first;
+    urlController.text = selectedUrl!;
     setState(() {});
   }
 
@@ -149,33 +158,61 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
                 String url = songs[index].url;
                 OnlineSongModel song = songs[index];
                 String fileName = url.split("/").last;
-                return ListTile(
-                  leading: const Icon(Icons.cloud, color: Colors.white),
-                  title: Text(
-                    fileName,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                    onTap: () async {
-                      if (song.url != null) {
-                        print("Playing: ${song.title}");
+                return StreamBuilder<PlayerState>(
+                  stream: audioService.playerStateStream,
+                  builder: (context, snapshot) {
+
+                    final playing = snapshot.data?.playing ?? false;
+                    final isCurrentSong = audioService.currentTitle == song.title;
+
+                    return ListTile(
+                      tileColor: isCurrentSong
+                          ? Colors.grey.shade800
+                          : Colors.transparent,
+
+                      leading: const Icon(Icons.cloud, color: Colors.white),
+
+                      title: Text(
+                        fileName,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          isCurrentSong && playing
+                              ? Icons.pause
+                              : Icons.play_arrow,
+                          color: Colors.greenAccent,
+                        ),
+                        onPressed: () async {
+                          if (isCurrentSong && playing) {
+                            await audioService.pause();
+                          } else {
+                            await audioService.playUrl(
+                              song.url,
+                              title: song.title,
+                            );
+                            await DatabaseHelper.instance.insertSong(
+                              title: song.title,
+                              url: song.url,
+                              artist: song.artist,
+                            );
+                          }
+                        },
+                      ),
+
+                      onTap: () async {
                         await audioService.playUrl(
                           song.url,
                           title: song.title,
                         );
-                        // 🔹 Save to history
                         await DatabaseHelper.instance.insertSong(
                           title: song.title,
                           url: song.url,
                           artist: song.artist,
                         );
-
-                        setState(() {});
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("File path not found")),
-                        );
-                      }
-                    },
+                      },
+                    );
+                  },
                 );
               },
             ),

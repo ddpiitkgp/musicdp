@@ -10,23 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77bd8f06-5a62-426f-ade3-73d11d6b9d2c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/player/pad_audio_manager.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_graph.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_graph.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/widgets/expanded_player.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/player/audio_player_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/player/audio_player_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/local_songs_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/local_songs_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/screens/login_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/login_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/screens/online_songs_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/online_songs_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/audio_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/audio_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/services/online_music_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/online_music_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/utils/general_utils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/general_utils.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/widgets/mini_player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/mini_player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

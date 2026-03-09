@@ -19,7 +19,7 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
   final audioService = AudioPlayerService(); // Global audio player
 
   final List<String> defaultUrls = [
-    "http://tumblr.blog.netgautam.com/wp-content/uploads/audio_/Hindi/",
+    "https://tumblr.blog.netgautam.com/wp-content/uploads/audio_/Hindi/",
     "https://www.microvolt.com/001-Healthy-Living/0001-bollywood-INDIAN-MUSIC/",
     "https://www.ruhanisatsangusa.org/mp3/Hindi/",
   ];

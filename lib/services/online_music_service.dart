@@ -1,14 +1,25 @@
 import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:http/io_client.dart';
 import 'package:musicdp/models/onlinesong.dart';
 
 class OnlineMusicService {
 
   Future<List<OnlineSongModel>> fetchSongs(String url) async {
     final uri = Uri.parse(url);
-    final response = await http.get(uri);
+    // final response = await http.get(uri);
+    // if (response.statusCode != 200) {
+    //   throw Exception("Cannot reach server");
+    // }
+    // Create HttpClient that accepts all certificates (development only)
+    HttpClient httpClient = HttpClient()
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    final ioClient = IOClient(httpClient);
+    final response = await ioClient.get(uri);
     if (response.statusCode != 200) {
       throw Exception("Cannot reach server");
     }
+
     final body = response.body;
     // match mp3 links
     RegExp exp = RegExp(r'href="([^"]+\.mp3)"', caseSensitive: false);

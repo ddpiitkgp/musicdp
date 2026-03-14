@@ -5,47 +5,72 @@ import 'package:musicdp/models/onlinesong.dart';
 
 class OnlineMusicService {
 
-  Future<List<OnlineSongModel>> fetchSongs(String url) async {
+  Future<List<OnlineSongModel>> fetchItems(String url) async {
     final uri = Uri.parse(url);
-    // final response = await http.get(uri);
-    // if (response.statusCode != 200) {
-    //   throw Exception("Cannot reach server");
-    // }
-    // Create HttpClient that accepts all certificates (development only)
+
+    // allow self-signed certificates
     HttpClient httpClient = HttpClient()
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+
     final ioClient = IOClient(httpClient);
     final response = await ioClient.get(uri);
+
     if (response.statusCode != 200) {
       throw Exception("Cannot reach server");
     }
 
     final body = response.body;
-    // match mp3 links
-    RegExp exp = RegExp(r'href="([^"]+\.mp3)"', caseSensitive: false);
+
+    // capture all links from nginx directory listing
+    RegExp exp = RegExp(r'href="([^"]+)"', caseSensitive: false);
     Iterable<Match> matches = exp.allMatches(body);
-    List<OnlineSongModel> songs = [];
-    Set<String> seen = {}; // avoid duplicates
+
+    List<OnlineSongModel> items = [];
+    Set<String> seen = {};
+    bool isFolder = false, isAudio = false;
     for (var m in matches) {
-      String file = m.group(1)!;
-      // build full URL safely
-      Uri songUri = uri.resolve(file);
-      String fullUrl = songUri.toString();
+      String link = m.group(1)!;
+
+      // skip parent directory
+      if (link == "../") continue;
+
+      Uri itemUri = uri.resolve(link);
+      String fullUrl = itemUri.toString();
+
       if (seen.contains(fullUrl)) continue;
       seen.add(fullUrl);
-      // extract filename
-      String title = songUri.pathSegments.last
-          .replaceAll(".mp3", "")
-          .replaceAll("%20", " ");
-      songs.add(
+
+      isFolder = link.endsWith("/");
+
+      isAudio = link.toLowerCase().endsWith(".mp3") ||
+          link.toLowerCase().endsWith(".flac") ||
+          link.toLowerCase().endsWith(".wav") ||
+          link.toLowerCase().endsWith(".m4a");
+
+      if (!isFolder && !isAudio) continue;
+
+      String name = itemUri.pathSegments.last;
+
+      // folders have empty last segment sometimes
+      if (isFolder) {
+        name = itemUri.pathSegments[itemUri.pathSegments.length - 2];
+      }
+
+      name = name
+          .replaceAll("%20", " ")
+          .replaceAll(RegExp(r'\.(mp3|flac|wav|m4a)$', caseSensitive: false), "");
+
+      items.add(
         OnlineSongModel(
-          title: title,
+          title: name,
           url: fullUrl,
-          artist: "Online",
+          artist: isFolder ? "Folder" : "Online",
+          isFolder: isFolder,
         ),
       );
     }
 
-    return songs;
+    return items;
   }
 }

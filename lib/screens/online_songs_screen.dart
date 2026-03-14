@@ -19,9 +19,8 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
   final audioService = AudioPlayerService(); // Global audio player
 
   final List<String> defaultUrls = [
-    "https://tumblr.blog.netgautam.com/wp-content/uploads/audio_/Hindi/",
-    "https://www.microvolt.com/001-Healthy-Living/0001-bollywood-INDIAN-MUSIC/",
-    "https://www.ruhanisatsangusa.org/mp3/Hindi/",
+    "http://10.5.22.11/Music/",
+    "https://ai.stanford.edu/~bangpeng/download/music/rmn/",
   ];
 
   //List<String> songs = [];
@@ -50,7 +49,7 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
     });
 
     try {
-      List<OnlineSongModel> result = await service.fetchSongs(urlController.text);
+      List<OnlineSongModel> result = await service.fetchItems(urlController.text);
       setState(() {
         songs = result;
       });
@@ -155,9 +154,9 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
             child: ListView.builder(
               itemCount: songs.length,
               itemBuilder: (context, index) {
-                String url = songs[index].url;
                 OnlineSongModel song = songs[index];
-                String fileName = url.split("/").last;
+                bool isFolder = song.isFolder;
+
                 return StreamBuilder<PlayerState>(
                   stream: audioService.playerStateStream,
                   builder: (context, snapshot) {
@@ -170,13 +169,20 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
                           ? Colors.grey.shade800
                           : Colors.transparent,
 
-                      leading: const Icon(Icons.cloud, color: Colors.white),
+                      leading: Icon(
+                        isFolder ? Icons.folder : Icons.music_note,
+                        color: isFolder ? Colors.orange : Colors.greenAccent,
+                      ),
 
                       title: Text(
-                        fileName,
+                        song.title,
                         style: const TextStyle(color: Colors.white),
                       ),
-                      trailing: IconButton(
+
+                      /// SHOW PLAY BUTTON ONLY FOR SONGS
+                      trailing: isFolder
+                          ? null
+                          : IconButton(
                         icon: Icon(
                           isCurrentSong && playing
                               ? Icons.pause
@@ -191,6 +197,7 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
                               song.url,
                               title: song.title,
                             );
+
                             await DatabaseHelper.instance.insertSong(
                               title: song.title,
                               url: song.url,
@@ -201,22 +208,53 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
                       ),
 
                       onTap: () async {
-                        await audioService.playUrl(
-                          song.url,
-                          title: song.title,
-                        );
-                        await DatabaseHelper.instance.insertSong(
-                          title: song.title,
-                          url: song.url,
-                          artist: song.artist,
-                        );
+
+                        /// IF FOLDER → OPEN DIRECTORY
+                        if (isFolder) {
+                          urlController.text = song.url;
+
+                          setState(() {
+                            loading = true;
+                          });
+
+                          try {
+                            List<OnlineSongModel> result =
+                            await service.fetchItems(song.url);
+
+                            setState(() {
+                              songs = result;
+                            });
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.toString())),
+                            );
+                          }
+
+                          setState(() {
+                            loading = false;
+                          });
+
+                        } else {
+
+                          /// IF SONG → PLAY
+                          await audioService.playUrl(
+                            song.url,
+                            title: song.title,
+                          );
+
+                          await DatabaseHelper.instance.insertSong(
+                            title: song.title,
+                            url: song.url,
+                            artist: song.artist,
+                          );
+                        }
                       },
                     );
                   },
                 );
               },
             ),
-          ),
+          )
 
         ],
       ),

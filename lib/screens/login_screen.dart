@@ -12,6 +12,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailPhoneController = TextEditingController();
   bool isAgreed = false;
 
+  final Map<String, String> acknowledgement = {
+    "title": "Acknowledgement",
+    "text": "I would like to thank OpenAI and ChatGPT for their helpful guidance and support during the development of MusicDP. The assistance provided greatly helped in solving technical challenges and improving the application. I also appreciate the availability of open-source tools and documentation that supported the development process. Their collective contribution made this project possible."
+  };
   @override
   Widget build(BuildContext context) {
     // Get keyboard height for padding
@@ -154,6 +158,31 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "Acknowledgement",
+                              style: TextStyle(
+                                color: Colors.lightGreenAccent,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              "I would like to thank OpenAI and ChatGPT for their helpful guidance and support during the development of MusicDP. The assistance provided greatly helped in solving technical challenges and improving the application. I also appreciate the availability of open-source tools and documentation that supported the development process. Their collective contribution made this project possible.",
+                              style: TextStyle(
+                                //textAlign: TextAlign.justify,
+                                color: Colors.grey,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       const Spacer(), // pushes content up if screen is tall
                     ],
                   ),

@@ -22,7 +22,7 @@ If you discover a security vulnerability in MusicDP, please report it responsibl
 ### How to Report
 Please send details of the vulnerability to:
 
-**Email:** ddprasad@example.com
+**Email:** ddprasad@gmail.com
 
 Include the following information if possible:
 

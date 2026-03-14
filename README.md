@@ -1,6 +1,6 @@
 # Privacy Policy for MusicDP
 
-**Last updated:** [Date]
+**Last updated:** 14th March, 2026
 
 MusicDP respects your privacy. This Privacy Policy explains how our application handles user data.
 

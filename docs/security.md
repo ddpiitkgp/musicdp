@@ -42,6 +42,13 @@ Please **do not publicly disclose** the vulnerability until it has been investig
 ### Security Updates
 Security patches will be released through the project's repository and application updates distributed via the app store.
 
+
+## Policies
+
+- [Privacy Policy Terms](policy-terms.md)
+- [Security Policy](security.md)
+- [Main Page](index.md)
+
 ---
 
 Thank you for helping keep MusicDP secure.

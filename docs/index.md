@@ -8,8 +8,9 @@ MusicDP respects your privacy. This Privacy Policy explains how our application 
 
 ## Policies
 
-- 🔒 [Privacy Policy Terms](policy-terms.md)
-- 🛡️ [Security Policy](security.md)
+- [Privacy Policy Terms](policy-terms.md)
+- [Security Policy](security.md)
+- [Main Page](index.md)
 
 ---
 

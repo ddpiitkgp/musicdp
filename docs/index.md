@@ -5,10 +5,12 @@
 MusicDP respects your privacy. This Privacy Policy explains how our application handles user data.
 
 ---
+
 ## Policies
 
 - 🔒 [Privacy Policy](privacy-policy.md)
-- 🛡️ [Security Policy](../security.md)
+- 🛡️ [Security Policy](security.md)
+
 ---
 
 ## 1. Information We Collect

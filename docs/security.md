@@ -45,7 +45,7 @@ Security patches will be released through the project's repository and applicati
 
 ## Policies
 
-- [Privacy Policy Terms](policy-terms.md)
+- [Privacy Policy Terms](privacy-policy.md)
 - [Security Policy](security.md)
 - [Main Page](index.md)
 

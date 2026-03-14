@@ -6,7 +6,7 @@ MusicDP respects your privacy. This Privacy Policy explains how our application 
 
 ## Policies
 
-- [Privacy Policy Terms](policy-terms.md)
+- [Privacy Policy Terms](privacy-policy.md)
 - [Security Policy](security.md)
 - [Main Page](index.md)
 

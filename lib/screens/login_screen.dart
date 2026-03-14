@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:musicdp/screens/home_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +13,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailPhoneController = TextEditingController();
   bool isAgreed = false;
+
+  Future<void> openUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
 
   final Map<String, String> acknowledgement = {
     "title": "Acknowledgement",
@@ -90,7 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
 
                       const SizedBox(height: 20),
-
                       Row(
                         children: [
                           Checkbox(
@@ -102,17 +108,59 @@ class _LoginScreenState extends State<LoginScreen> {
                               });
                             },
                           ),
-                          const Expanded(
-                            child: Text(
-                              "I agree to MusicDP Terms & Conditions",
-                              style: TextStyle(
-                                color: Colors.white54,
-                                fontSize: 12,
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                                children: [
+                                  const TextSpan(text: "I agree to MusicDP "),
+                                  TextSpan(
+                                    text: "Terms",
+                                    style: const TextStyle(
+                                      color: Colors.lightBlueAccent,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        openUrl("https://ddpiitkgp.github.io/musicdp/");
+                                      },
+                                  ),
+                                  const TextSpan(text: ", "),
+                                  TextSpan(
+                                    text: "Privacy Policy",
+                                    style: const TextStyle(
+                                      color: Colors.lightBlueAccent,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        openUrl(
+                                            "https://ddpiitkgp.github.io/musicdp/privacy-policy.html");
+                                      },
+                                  ),
+                                  const TextSpan(text: " and "),
+                                  TextSpan(
+                                    text: "Security Policy",
+                                    style: const TextStyle(
+                                      color: Colors.lightBlueAccent,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        openUrl(
+                                            "https://ddpiitkgp.github.io/musicdp/security.html");
+                                      },
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
+
                       const SizedBox(height: 20),
 
                       /// Button

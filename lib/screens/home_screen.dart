@@ -1,11 +1,15 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:musicdp/screens/login_screen.dart';
 import 'package:musicdp/screens/local_songs_screen.dart';
+import 'package:musicdp/utils/general_utils.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:musicdp/screens/bottom_status_bar.dart';
 import 'package:musicdp/screens/online_songs_screen.dart';
 import 'package:musicdp/player/audio_player_service.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController beatController = TextEditingController();
   List<String> instruments = [ "Kick", "Snare", "HiHat", "Clap", "Tom", "Crash", "Ride", "Bass"];
   final audioService = AudioPlayerService(); // Global audio player
+  String markdownData = "";
 
   Future<bool> requestMusicPermission() async {
     var status = await Permission.audio.request();
@@ -124,6 +129,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
           const SizedBox(height: 25),
 
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  color: Colors.white54,
+                  fontSize: 20,
+                ),
+                children: [
+                  const TextSpan(text: "How to get URls: "),
+                  TextSpan(
+                    text: "Click Here to Read",
+                    style: const TextStyle(
+                      color: Colors.lightBlueAccent,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        UrlUtils.openUrl("https://ddpiitkgp.github.io/musicdp/audio-policy.html");
+                      },
+                  ),
+                ],
+              ),
+            ),
+          ),
           /// OCTOPAD SECTION
           /*
           const Text(

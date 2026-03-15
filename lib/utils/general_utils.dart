@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'dart:io';
 
+import 'package:url_launcher/url_launcher.dart';
+
 //Widget getSimpleText(String? text, {TextStyle? style, int maxChars = 20}) {
 Widget getMarquee(String? text, {TextStyle? style, int maxChars = 20}) {
   // Ensure maxChars is defined and has a default value
@@ -67,4 +69,11 @@ class AudioUtils {
     return allowedExtensions.contains(ext);
   }
 
+}
+
+class UrlUtils {
+  static Future<void> openUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
 }

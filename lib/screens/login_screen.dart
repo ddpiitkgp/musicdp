@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:musicdp/screens/home_screen.dart';
+import 'package:musicdp/utils/general_utils.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,11 +19,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailPhoneController = TextEditingController();
   bool isAgreed = false;
-
-  Future<void> openUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
 
   final Map<String, String> acknowledgement = {
     "title": "Acknowledgement",
@@ -117,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               text: TextSpan(
                                 style: const TextStyle(
                                   color: Colors.white54,
-                                  fontSize: 12,
+                                  fontSize: 16,
                                 ),
                                 children: [
                                   const TextSpan(text: "I agree to MusicDP "),
@@ -129,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        openUrl("https://ddpiitkgp.github.io/musicdp/");
+                                        UrlUtils.openUrl("https://ddpiitkgp.github.io/musicdp/");
                                       },
                                   ),
                                   const TextSpan(text: ", "),
@@ -141,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        openUrl(
+                                        UrlUtils.openUrl(
                                             "https://ddpiitkgp.github.io/musicdp/privacy-policy.html");
                                       },
                                   ),
@@ -154,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        openUrl(
+                                        UrlUtils.openUrl(
                                             "https://ddpiitkgp.github.io/musicdp/security.html");
                                       },
                                   ),
@@ -202,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               );
                             }
                           }
-                              : null,
+                          : null,
                           child: const Text(
                             "Continue",
                             style: TextStyle(fontSize: 16),
@@ -210,30 +207,49 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Acknowledgement",
-                              style: TextStyle(
-                                color: Colors.lightGreenAccent,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      const SizedBox(height: 20),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Acknowledgement",
+                            style: TextStyle(
+                              color: Colors.lightGreenAccent,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                            SizedBox(height: 6),
-                            Text(
-                              "I would like to thank OpenAI and ChatGPT for their helpful guidance and support during the development of MusicDP. The assistance provided greatly helped in solving technical challenges and improving the application. I also appreciate the availability of open-source tools and documentation that supported the development process. Their collective contribution made this project possible.",
-                              style: TextStyle(
-                                //textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 6),
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
                                 color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
                               ),
+                              children: [
+                                const TextSpan(
+                                  text:
+                                  "I would like to thank OpenAI and ChatGPT for their helpful guidance and support during the development of MusicDP. ",
+                                ),
+                                const TextSpan(text: ""),
+                                TextSpan(
+                                  text: " Read More ",
+                                  style: const TextStyle(
+                                    color: Colors.lightBlueAccent,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      UrlUtils.openUrl(
+                                        "https://ddpiitkgp.github.io/musicdp/acknowledgements.html",
+                                      );
+                                    },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       const Spacer(), // pushes content up if screen is tall
                     ],

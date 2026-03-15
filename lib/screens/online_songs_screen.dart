@@ -20,8 +20,9 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
   final audioService = AudioPlayerService(); // Global audio player
 
   final List<String> defaultUrls = [
-    "http://10.5.22.11/Music/",
-    "https://ai.stanford.edu/~bangpeng/download/music/rmn/",
+    "<Enter Public/Local URL>"
+   // "http://10.5.22.11/Music/",
+   // "https://ai.stanford.edu/~bangpeng/download/music/rmn/",
   ];
 
   //List<String> songs = [];

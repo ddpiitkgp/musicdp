@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
+import 'dart:io';
 
 //Widget getSimpleText(String? text, {TextStyle? style, int maxChars = 20}) {
 Widget getMarquee(String? text, {TextStyle? style, int maxChars = 20}) {
@@ -44,3 +45,26 @@ Widget getMarquee(String text, {TextStyle? style, double height = 24}) {
   );
 }
 */
+
+class AudioUtils {
+
+  static List<String> allowedExtensions = [
+    'mp3',
+    'm4a',
+    'aac',
+    'wav',
+    'ogg'
+  ];
+
+  static Future<bool> validateFile(File file) async {
+    int fileSize = await file.length();
+    if (fileSize > 1024 * 1024) return true;
+    else return true;
+  }
+
+  static bool isValidExtension(String path) {
+    String ext = path.split('.').last.toLowerCase();
+    return allowedExtensions.contains(ext);
+  }
+
+}

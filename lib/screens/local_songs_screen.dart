@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:musicdp/widgets/mini_player.dart';
@@ -5,6 +7,7 @@ import 'package:musicdp/player/audio_player_service.dart';
 import 'package:marquee/marquee.dart';
 import 'package:musicdp/database/database_helper.dart';
 import 'package:musicdp/models/onlinesong.dart';
+import 'package:musicdp/utils/general_utils.dart';
 import 'package:just_audio/just_audio.dart';
 
 
@@ -18,7 +21,6 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
 
   final OnAudioQuery _audioQuery = OnAudioQuery();
   final audioService = AudioPlayerService(); // Global audio player
-
   List<SongModel> songs = [];
 
   @override
@@ -40,8 +42,15 @@ class _LocalSongsScreenState extends State<LocalSongsScreen> {
         ignoreCase: true,
       );
 
+      List<SongModel> filteredSongs = [];
+      for (var song in result) {
+        File file = File(song.data);
+        if (AudioUtils.isValidExtension(song.data) && await AudioUtils.validateFile(file)) {
+          filteredSongs.add(song);
+        }
+      }
       setState(() {
-        songs = result;
+        songs = filteredSongs;
       });
     }
   }

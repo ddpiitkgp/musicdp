@@ -4,6 +4,7 @@ import 'package:musicdp/player/audio_player_service.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:musicdp/database/database_helper.dart';
 import 'package:musicdp/models/onlinesong.dart';
+import 'package:musicdp/utils/general_utils.dart';
 import 'package:just_audio/just_audio.dart';
 
 class OnlineSongsScreen extends StatefulWidget {
@@ -25,7 +26,6 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
 
   //List<String> songs = [];
   bool loading = false;
-
   List<String> savedUrls = [];
   String? selectedUrl;
   List<OnlineSongModel> songs = [];
@@ -50,6 +50,7 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
 
     try {
       List<OnlineSongModel> result = await service.fetchItems(urlController.text);
+
       setState(() {
         songs = result;
       });

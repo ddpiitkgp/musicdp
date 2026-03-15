@@ -5,23 +5,18 @@
 This document explains how the MusicDP application handles audio files from both local storage and online directories.
 
 # Supported Audio Formats
-
+```
 The application only supports the following audio formats:
-
 - mp3 , m4a , aac , wav , ogg
-
 Files with other extensions will be ignored.
-
+```
 ---
 
 # File Size Limit
-
-For **local audio files**, the maximum allowed size is:
-
-**1 MB**
-
+```
+For **local audio files**, the maximum allowed size is: **1 MB**
 Files larger than this limit will not be shown in the application.
-
+```
 ---
 
 # Online Audio Sources

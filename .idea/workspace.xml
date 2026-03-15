@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77bd8f06-5a62-426f-ade3-73d11d6b9d2c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/audio-policy.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/audio-policy.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

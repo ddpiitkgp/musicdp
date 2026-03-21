@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:musicdp/player/audio_player_service.dart';
-import 'package:marquee/marquee.dart';
 import 'package:musicdp/database/database_helper.dart';
-import 'package:musicdp/models/onlinesong.dart';
 import 'package:musicdp/utils/general_utils.dart';
 import 'package:just_audio/just_audio.dart';
 

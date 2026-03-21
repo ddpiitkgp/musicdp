@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:marquee/marquee.dart';
 import 'dart:io';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -60,8 +59,11 @@ class AudioUtils {
 
   static Future<bool> validateFile(File file) async {
     int fileSize = await file.length();
-    if (fileSize > 1024 * 1024) return true;
-    else return true;
+    if (fileSize > 1024 * 1024) {
+      return true;
+    } else {
+      return true;
+    }
   }
 
   static bool isValidExtension(String path) {

@@ -1,15 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:musicdp/screens/login_screen.dart';
 import 'package:musicdp/screens/local_songs_screen.dart';
 import 'package:musicdp/utils/general_utils.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:musicdp/screens/bottom_status_bar.dart';
 import 'package:musicdp/screens/online_songs_screen.dart';
 import 'package:musicdp/player/audio_player_service.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

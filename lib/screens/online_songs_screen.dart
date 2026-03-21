@@ -4,7 +4,6 @@ import 'package:musicdp/player/audio_player_service.dart';
 import 'package:musicdp/widgets/mini_player.dart';
 import 'package:musicdp/database/database_helper.dart';
 import 'package:musicdp/models/onlinesong.dart';
-import 'package:musicdp/utils/general_utils.dart';
 import 'package:just_audio/just_audio.dart';
 
 class OnlineSongsScreen extends StatefulWidget {
@@ -111,7 +110,7 @@ class _OnlineSongsScreenState extends State<OnlineSongsScreen> {
                       color: Colors.greenAccent,
                     ),
                     menuStyle: const MenuStyle(
-                      backgroundColor: MaterialStatePropertyAll(
+                      backgroundColor: WidgetStatePropertyAll(
                         Color.fromARGB(255, 25, 25, 25),
                       ),
                     ),

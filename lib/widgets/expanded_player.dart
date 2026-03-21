@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musicdp/player/audio_player_service.dart';
-import 'package:musicdp/utils/general_utils.dart';
 
 class ExpandedPlayer extends StatelessWidget {
   final AudioPlayerService audPlayerService;
